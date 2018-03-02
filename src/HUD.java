@@ -19,6 +19,18 @@ public class HUD extends JFrame implements ActionListener {
 		
 	}
 	
+	
+
+    /*
+    BufferedImage buttonIcon = ImageIO.read(new File("myImage.png"));
+    button = new JButton(new ImageIcon(buttonIcon));
+    button.setBorderPainted(false);
+    button.setFocusPainted(false);
+    button.setContentAreaFilled(false);
+    */
+
+
+	
 
 	/**
 	 * Controller

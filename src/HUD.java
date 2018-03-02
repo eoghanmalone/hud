@@ -19,11 +19,7 @@ public class HUD extends JFrame implements ActionListener {
 		
 	}
 	
-	
-	
-	
-	
-	
+
 	/**
 	 * Controller
 	 */
@@ -33,7 +29,7 @@ public class HUD extends JFrame implements ActionListener {
 		
 		// Regroup with Lewis and establish controller movements
 		
-		// left
+		// left [if we keep pressing left or right will it just go clockwise / anti-clockwise]
 		
 		// right
 		

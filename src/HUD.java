@@ -1,13 +1,19 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.KeyboardFocusManager;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
@@ -20,7 +26,7 @@ public class HUD extends JFrame implements KeyListener  {
 
 	// LOCALS
 	private int hudWidth, hudHeight;
-	
+	JButton topleft, topright, bottomleft, bottomright;
 	
 	public HUD() {
 		
@@ -64,22 +70,42 @@ public class HUD extends JFrame implements KeyListener  {
         frame.setLayout(grid);
         
         // HUD BUTTONS
-        JButton topleft = new JButton();
+        topleft = new JButton();
+        topleft.setIcon(new ImageIcon(((new ImageIcon("topleft_off.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
+        topleft.setMargin(new Insets(0, 0, 0, 0));
+        topleft.setBorderPainted(false);
+        topleft.setFocusPainted(false);
+        topleft.setContentAreaFilled(false);    
         topleft.addKeyListener(this);
         topleft.setName("TOPLEFT");
         frame.add(topleft);
         
-        JButton topright = new JButton();
+        topright = new JButton();
+        topright.setIcon(new ImageIcon(((new ImageIcon("topright_off.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
+        topright.setMargin(new Insets(0, 0, 0, 0));
+        topright.setBorderPainted(false);
+        topright.setFocusPainted(false);
+        topright.setContentAreaFilled(false);
         topright.addKeyListener(this);
         topright.setName("TOPRIGHT");
         frame.add(topright);
 
-        JButton bottomleft = new JButton();
+        bottomleft = new JButton();
+        bottomleft.setIcon(new ImageIcon(((new ImageIcon("bottomleft_off.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
+        bottomleft.setMargin(new Insets(0, 0, 0, 0));
+        bottomleft.setBorderPainted(false);
+        bottomleft.setFocusPainted(false);
+        bottomleft.setContentAreaFilled(false);
         bottomleft.addKeyListener(this);
         bottomleft.setName("BOTTOMLEFT");
         frame.add(bottomleft);
         
-        JButton bottomright = new JButton();
+        bottomright = new JButton();
+        bottomright.setIcon(new ImageIcon(((new ImageIcon("bottomright_off.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
+        bottomright.setMargin(new Insets(0, 0, 0, 0));
+        bottomright.setBorderPainted(false);
+        bottomright.setFocusPainted(false);
+        bottomright.setContentAreaFilled(false);
         bottomright.addKeyListener(this);
         bottomright.setName("BOTTOMRIGHT");
         frame.add(bottomright);      
@@ -91,6 +117,19 @@ public class HUD extends JFrame implements KeyListener  {
 	}	
 	
 
+	public void shiftFocus(String component) {
+		
+		switch (component) {
+        case "TOPLEFT":  
+                 break;
+    }
+		
+    System.out.println(component);
+	}
+			
+		
+
+	
 	/**
 	 * Controller
 	 */
@@ -103,27 +142,72 @@ public class HUD extends JFrame implements KeyListener  {
 		// Sorted most of it now.
 	   System.out.println(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner().getName()); // Debug
 	
+	   String component = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner().getName();
+	   
 	   // Key pressed
 	   int key = evt.getKeyCode();
 	   
 	   if (key == KeyEvent.VK_LEFT) {
 
 		  System.out.println("left");
+
+		  if(component == "TOPRIGHT") {
+			  topleft.requestFocusInWindow();
+			  System.out.println("FOCUS NOW IN TOP LEFT WINDOW");
+		  }
 		  
-		  // jTextField2.requestFocusInWindow();
+		  if(component == "BOTTOMRIGHT") {
+			  bottomleft.requestFocusInWindow();
+			  System.out.println("FOCUS NOW IN BOTTOM LEFT WINDOW");
+		  }
+		  
 	      repaint();
-	   }
-	   else if (key == KeyEvent.VK_RIGHT) {
+	      
+	   } else if (key == KeyEvent.VK_RIGHT) {
+		   
 		  System.out.println("right");
 		  
+		  if(component == "TOPLEFT") {
+			  topright.requestFocusInWindow();
+			  System.out.println("FOCUS NOW IN TOP RIGHT WINDOW");
+		  }
+		  
+		  if(component == "BOTTOMLEFT") {
+			  bottomright.requestFocusInWindow();
+			  System.out.println("FOCUS NOW IN BOTTOM RIGHT WINDOW");
+		  }
+		  
 	      repaint();
-	   }
-	   else if (key == KeyEvent.VK_UP) {
+	      
+	   }  else if (key == KeyEvent.VK_UP) {
+		   
 		  System.out.println("up");
+		  
+		  if(component == "BOTTOMLEFT") {
+			  topleft.requestFocusInWindow();
+			  System.out.println("FOCUS NOW IN TOP LEFT WINDOW");
+		  }
+		  
+		  if(component == "BOTTOMRIGHT") {
+			  topright.requestFocusInWindow();
+			  System.out.println("FOCUS NOW IN TOP RIGHT WINDOW");
+		  }
+		  
 	      repaint();
-	   }
-	   else if (key == KeyEvent.VK_DOWN) {
+	      
+	   } else if (key == KeyEvent.VK_DOWN) {
+		   
 		  System.out.println("down");
+		  
+		  if(component == "TOPLEFT") {
+			  bottomleft.requestFocusInWindow();
+			  System.out.println("FOCUS NOW IN BOTTOM LEFT WINDOW");
+		  }
+		  if(component == "TOPRIGHT") {
+			  bottomright.requestFocusInWindow();
+			  System.out.println("FOCUS NOW IN BOTTOM RIGHT WINDOW");
+		  }
+		  
 	      repaint();
 	   }
 		   

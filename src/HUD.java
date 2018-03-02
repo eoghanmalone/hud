@@ -110,13 +110,15 @@ public class HUD extends JFrame implements KeyListener  {
         bottomright.setName("BOTTOMRIGHT");
         frame.add(bottomright);      
  
-		//frame.pack(); // take pack off later. Might be too bunched
+		frame.pack(); // take pack off later. Might be too bunched
 		frame.setSize(hudWidth, hudHeight);
 		frame.setLocation(x,y); // location [just above taskbar and horiz centered]
 		frame.setVisible(true); // make frame visible
 	}	
 	
 
+	// PLACEHOLDER TODO: split out the shite from keyListener
+	// Works just now, but best off in its own method.
 	public void shiftFocus(String component) {
 		
 		switch (component) {
@@ -127,8 +129,6 @@ public class HUD extends JFrame implements KeyListener  {
     System.out.println(component);
 	}
 			
-		
-
 	
 	/**
 	 * Controller

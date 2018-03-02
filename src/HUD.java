@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.KeyboardFocusManager;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -65,18 +66,22 @@ public class HUD extends JFrame implements KeyListener  {
         // HUD BUTTONS
         JButton topleft = new JButton();
         topleft.addKeyListener(this);
+        topleft.setName("TOPLEFT");
         frame.add(topleft);
         
         JButton topright = new JButton();
         topright.addKeyListener(this);
+        topright.setName("TOPRIGHT");
         frame.add(topright);
 
         JButton bottomleft = new JButton();
         bottomleft.addKeyListener(this);
+        bottomleft.setName("BOTTOMLEFT");
         frame.add(bottomleft);
         
         JButton bottomright = new JButton();
         bottomright.addKeyListener(this);
+        bottomright.setName("BOTTOMRIGHT");
         frame.add(bottomright);      
  
 		//frame.pack(); // take pack off later. Might be too bunched
@@ -89,33 +94,40 @@ public class HUD extends JFrame implements KeyListener  {
 	/**
 	 * Controller
 	 */
-	
 	public void keyPressed(KeyEvent evt) { 
-		   
-		   int key = evt.getKeyCode();  // keyboard code for the pressed key
-		   
-		   if (key == KeyEvent.VK_LEFT) {  // move the square left
+		
+		// We need to know the name of the button that is in play.
+		// Some shennanigans here. We need to shift the focus to the next component.
+		// i.e. it we move the bottom right, we need to shift focus to the button
+		// so the key listener will be associated with that button.
+		// Sorted most of it now.
+	   System.out.println(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner().getName()); // Debug
+	
+	   // Key pressed
+	   int key = evt.getKeyCode();
+	   
+	   if (key == KeyEvent.VK_LEFT) {
 
-			  System.out.println("left");
-			  
-			  // jTextField2.requestFocusInWindow();
-		      repaint();
-		   }
-		   else if (key == KeyEvent.VK_RIGHT) {  // move the square right
-			  System.out.println("right");
-			  
-		      repaint();
-		   }
-		   else if (key == KeyEvent.VK_UP) {  // move the squre up
-			  System.out.println("up");
-		      repaint();
-		   }
-		   else if (key == KeyEvent.VK_DOWN) {  // move the square down
-			  System.out.println("down");
-		      repaint();
-		   }
+		  System.out.println("left");
+		  
+		  // jTextField2.requestFocusInWindow();
+	      repaint();
+	   }
+	   else if (key == KeyEvent.VK_RIGHT) {
+		  System.out.println("right");
+		  
+	      repaint();
+	   }
+	   else if (key == KeyEvent.VK_UP) {
+		  System.out.println("up");
+	      repaint();
+	   }
+	   else if (key == KeyEvent.VK_DOWN) {
+		  System.out.println("down");
+	      repaint();
+	   }
 		   
-		}  // end keyPressed()
+	} 
 
 	@Override
 	public void keyReleased(KeyEvent e) {
@@ -128,7 +140,5 @@ public class HUD extends JFrame implements KeyListener  {
 		// TODO Auto-generated method stub
 		
 	}
-	
-
 
 }

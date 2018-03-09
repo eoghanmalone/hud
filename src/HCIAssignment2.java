@@ -12,7 +12,6 @@ public class HCIAssignment2 {
 		
 		new HUD();
 		
-		
 	}
 
 }

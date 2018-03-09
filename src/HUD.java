@@ -152,13 +152,18 @@ public class HUD extends JFrame implements KeyListener  {
 		  if(component == "TOPRIGHT") {
 			  
 			  topleft.requestFocusInWindow();
+			  topright.setIcon(new ImageIcon(((new ImageIcon("topright_off.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
 			  topleft.setIcon(new ImageIcon(((new ImageIcon("topleft_on.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
 			  System.out.println("FOCUS NOW IN TOP LEFT WINDOW");
 		  }
 		  
 		  if(component == "BOTTOMRIGHT") {
+			  
+			  bottomleft.setIcon(new ImageIcon(((new ImageIcon("bottomleft_on.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
+			  bottomright.setIcon(new ImageIcon(((new ImageIcon("bottomright_off.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
 			  bottomleft.requestFocusInWindow();
 			  System.out.println("FOCUS NOW IN BOTTOM LEFT WINDOW");
+			  
 		  }
 		  
 		 
@@ -170,6 +175,7 @@ public class HUD extends JFrame implements KeyListener  {
 		  System.out.println("right");
 		  
 		  if(component == "TOPLEFT") {
+			  topright.setIcon(new ImageIcon(((new ImageIcon("topright_on.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
 			  topleft.setIcon(new ImageIcon(((new ImageIcon("topleft_off.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
 			  topright.requestFocusInWindow();
 			  System.out.println("FOCUS NOW IN TOP RIGHT WINDOW");
@@ -177,6 +183,7 @@ public class HUD extends JFrame implements KeyListener  {
 		  
 		  if(component == "BOTTOMLEFT") {
 			  
+			  bottomleft.setIcon(new ImageIcon(((new ImageIcon("bottomleft_off.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
 			  bottomright.setIcon(new ImageIcon(((new ImageIcon("bottomright_on.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
 			  bottomright.requestFocusInWindow();
 			  System.out.println("FOCUS NOW IN BOTTOM RIGHT WINDOW");
@@ -190,11 +197,15 @@ public class HUD extends JFrame implements KeyListener  {
 		  
 		  if(component == "BOTTOMLEFT") {
 			  
+			  topleft.setIcon(new ImageIcon(((new ImageIcon("topleft_on.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
+			  bottomleft.setIcon(new ImageIcon(((new ImageIcon("bottomleft_off.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
 			  topleft.requestFocusInWindow();
 			  System.out.println("FOCUS NOW IN TOP LEFT WINDOW");
 		  }
 		  
 		  if(component == "BOTTOMRIGHT") {
+			  
+			  topright.setIcon(new ImageIcon(((new ImageIcon("topright_on.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
 			  bottomright.setIcon(new ImageIcon(((new ImageIcon("bottomright_off.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
 			  topright.requestFocusInWindow();
 			  System.out.println("FOCUS NOW IN TOP RIGHT WINDOW");
@@ -207,12 +218,14 @@ public class HUD extends JFrame implements KeyListener  {
 		  System.out.println("down");
 		  
 		  if(component == "TOPLEFT") {
-			  
+			  bottomleft.setIcon(new ImageIcon(((new ImageIcon("bottomleft_on.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
 			  topleft.setIcon(new ImageIcon(((new ImageIcon("topleft_off.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
 			  bottomleft.requestFocusInWindow();
 			  System.out.println("FOCUS NOW IN BOTTOM LEFT WINDOW");
 		  }
 		  if(component == "TOPRIGHT") {
+			  topright.setIcon(new ImageIcon(((new ImageIcon("topright_off.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
+			  bottomright.setIcon(new ImageIcon(((new ImageIcon("bottomright_on.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
 			  bottomright.requestFocusInWindow();
 			  System.out.println("FOCUS NOW IN BOTTOM RIGHT WINDOW");
 		  }

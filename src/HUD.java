@@ -26,44 +26,55 @@ public class HUD extends JFrame implements KeyListener  {
 
 	// LOCALS
 	private int hudWidth, hudHeight;
-	JButton topleft, topright, bottomleft, bottomright;
+	private JButton topleft, topright, bottomleft, bottomright;
+
+	Dimension dim;
+	
+	// width, height, x pos, y pos
+	int w, h, x, y;	
 	
 	public HUD() {
 		
 		// Init the HUD
 		hudHeight = hudWidth = 500;
+		
+        // Get the size of the screen
+        dim = Toolkit.getDefaultToolkit().getScreenSize();
+        w = this.getSize().width;
+        h = this.getSize().height;
+        x = (dim.width-w)/2-(hudWidth/2); // Correct for 1/2 of HUD width
+        y = ((dim.height-h)/2)-40;
+        
+        // Fire main hud on load
 		frameHUD();
 		
 	}
 	
-    /*
-     * Scratchpad
-     * 
-	    BufferedImage buttonIcon = ImageIO.read(new File("myImage.png"));
-	    button = new JButton(new ImageIcon(buttonIcon));
-	    button.setBorderPainted(false);
-	    button.setFocusPainted(false);
-	    button.setContentAreaFilled(false);
-    */
+	public void framePlayList() {
+		
+		JFrame frame = new JFrame("HUD");
+		
+        // set the rows and cols of the grid, as well the distances between them
+        GridLayout grid = new GridLayout(20, 1, 10, 10);
+        // what layout we want to use for our frame
+        frame.setLayout(grid);
+		
+		
+		frame.setSize(hudWidth, hudHeight);
+		frame.setLocation(x,y); // location [just above taskbar and horiz centered]
+		frame.setVisible(true); // make frame visible
+	
+	}
 
 	public void frameHUD() {
 		
 		JFrame frame = new JFrame("HUD");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-        // Get the size of the screen
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        int w = this.getSize().width;
-        int h = this.getSize().height;
-        int x = (dim.width-w)/2-(hudWidth/2); // Correct for 1/2 of HUD width
-        int y = ((dim.height-h)/2)-40;
 		
         // Disappear the background
         frame.setUndecorated(true);
         frame.getContentPane().setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
         frame.setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
-        
-
+       
         // set the rows and cols of the grid, as well the distances between them
         GridLayout grid = new GridLayout(2, 2, 10, 10);
         // what layout we want to use for our frame
@@ -117,19 +128,6 @@ public class HUD extends JFrame implements KeyListener  {
 	}	
 	
 
-	// PLACEHOLDER TODO: split out the shite from keyListener
-	// Works just now, but best off in its own method.
-	public void shiftFocus(String component) {
-		
-		switch (component) {
-        case "TOPLEFT":  
-                 break;
-    }
-		
-    System.out.println(component);
-	}
-			
-	
 	/**
 	 * Controller
 	 */
@@ -172,11 +170,14 @@ public class HUD extends JFrame implements KeyListener  {
 		  System.out.println("right");
 		  
 		  if(component == "TOPLEFT") {
+			  topleft.setIcon(new ImageIcon(((new ImageIcon("topleft_off.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
 			  topright.requestFocusInWindow();
 			  System.out.println("FOCUS NOW IN TOP RIGHT WINDOW");
 		  }
 		  
 		  if(component == "BOTTOMLEFT") {
+			  
+			  bottomright.setIcon(new ImageIcon(((new ImageIcon("bottomright_on.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
 			  bottomright.requestFocusInWindow();
 			  System.out.println("FOCUS NOW IN BOTTOM RIGHT WINDOW");
 		  }
@@ -188,11 +189,13 @@ public class HUD extends JFrame implements KeyListener  {
 		  System.out.println("up");
 		  
 		  if(component == "BOTTOMLEFT") {
+			  
 			  topleft.requestFocusInWindow();
 			  System.out.println("FOCUS NOW IN TOP LEFT WINDOW");
 		  }
 		  
 		  if(component == "BOTTOMRIGHT") {
+			  bottomright.setIcon(new ImageIcon(((new ImageIcon("bottomright_off.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
 			  topright.requestFocusInWindow();
 			  System.out.println("FOCUS NOW IN TOP RIGHT WINDOW");
 		  }
@@ -204,6 +207,7 @@ public class HUD extends JFrame implements KeyListener  {
 		  System.out.println("down");
 		  
 		  if(component == "TOPLEFT") {
+			  
 			  topleft.setIcon(new ImageIcon(((new ImageIcon("topleft_off.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
 			  bottomleft.requestFocusInWindow();
 			  System.out.println("FOCUS NOW IN BOTTOM LEFT WINDOW");

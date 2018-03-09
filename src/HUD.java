@@ -152,7 +152,9 @@ public class HUD extends JFrame implements KeyListener  {
 		  System.out.println("left");
 
 		  if(component == "TOPRIGHT") {
+			  
 			  topleft.requestFocusInWindow();
+			  topleft.setIcon(new ImageIcon(((new ImageIcon("topleft_on.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
 			  System.out.println("FOCUS NOW IN TOP LEFT WINDOW");
 		  }
 		  
@@ -160,6 +162,8 @@ public class HUD extends JFrame implements KeyListener  {
 			  bottomleft.requestFocusInWindow();
 			  System.out.println("FOCUS NOW IN BOTTOM LEFT WINDOW");
 		  }
+		  
+		 
 		  
 	      repaint();
 	      
@@ -200,6 +204,7 @@ public class HUD extends JFrame implements KeyListener  {
 		  System.out.println("down");
 		  
 		  if(component == "TOPLEFT") {
+			  topleft.setIcon(new ImageIcon(((new ImageIcon("topleft_off.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
 			  bottomleft.requestFocusInWindow();
 			  System.out.println("FOCUS NOW IN BOTTOM LEFT WINDOW");
 		  }

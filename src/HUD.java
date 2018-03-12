@@ -57,28 +57,37 @@ public class HUD extends JFrame implements KeyListener  {
         
         // Playlist A
         playListA = new JButton();
+        playListA.setText("Playlist A");
         playListA.setIcon(new ImageIcon(((new ImageIcon("playlist_on.png")).getImage()).getScaledInstance(498, 98, java.awt.Image.SCALE_SMOOTH)));
         playListA.setMargin(new Insets(0, 0, 0, 0));
         playListA.setBorderPainted(false);
         playListA.setFocusPainted(false);
         playListA.setContentAreaFilled(false);    
         playListA.addKeyListener(this);
+        playListA.setHorizontalTextPosition(JButton.CENTER);
+        playListA.setVerticalTextPosition(JButton.CENTER);
         playListA.setName("playlistA");
         framePLayList.add(playListA);
 
         // Playlist B
         playListB = new JButton();
+        playListB.setText("Playlist B");
         playListB.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498, 98, java.awt.Image.SCALE_SMOOTH)));
         playListB.setMargin(new Insets(0, 0, 0, 0));
         playListB.setBorderPainted(false);
         playListB.setFocusPainted(false);
         playListB.setContentAreaFilled(false);    
         playListB.addKeyListener(this);
+        playListB.setHorizontalTextPosition(JButton.CENTER);
+        playListB.setVerticalTextPosition(JButton.CENTER);
         playListB.setName("playlistB");
         framePLayList.add(playListB);
 
         // Playlist C
         playListC = new JButton();
+        playListC.setText("Playlist C");
+        playListC.setHorizontalTextPosition(JButton.CENTER);
+        playListC.setVerticalTextPosition(JButton.CENTER);
         playListC.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498, 98, java.awt.Image.SCALE_SMOOTH)));
         playListC.setMargin(new Insets(0, 0, 0, 0));
         playListC.setBorderPainted(false);
@@ -90,6 +99,9 @@ public class HUD extends JFrame implements KeyListener  {
 
         // Playlist D
         playListD = new JButton();
+        playListD.setText("Playlist D");
+        playListD.setHorizontalTextPosition(JButton.CENTER);
+        playListD.setVerticalTextPosition(JButton.CENTER);
         playListD.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498, 98, java.awt.Image.SCALE_SMOOTH)));
         playListD.setMargin(new Insets(0, 0, 0, 0));
         playListD.setBorderPainted(false);
@@ -101,6 +113,9 @@ public class HUD extends JFrame implements KeyListener  {
 
         // Playlist E
         playListE = new JButton();
+        playListE.setText("Playlist E");
+        playListE.setHorizontalTextPosition(JButton.CENTER);
+        playListE.setVerticalTextPosition(JButton.CENTER);
         playListE.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498, 98, java.awt.Image.SCALE_SMOOTH)));
         playListE.setMargin(new Insets(0, 0, 0, 0));
         playListE.setBorderPainted(false);
@@ -315,6 +330,7 @@ public class HUD extends JFrame implements KeyListener  {
 			   playListB.setIcon(new ImageIcon(((new ImageIcon("playlist_on.png")).getImage()).getScaledInstance(498, 98, java.awt.Image.SCALE_SMOOTH)));
 			   playListA.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498, 98, java.awt.Image.SCALE_SMOOTH)));
 			   playListB.requestFocusInWindow();
+		       playListA.setText("Playlist A");
 	
 		  }
 

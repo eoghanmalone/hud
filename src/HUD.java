@@ -63,7 +63,7 @@ public class HUD extends JFrame implements KeyListener  {
         playListA.setFocusPainted(false);
         playListA.setContentAreaFilled(false);    
         playListA.addKeyListener(this);
-        playListA.setName("playListA");
+        playListA.setName("playlistA");
         framePLayList.add(playListA);
 
         // Playlist B
@@ -197,11 +197,15 @@ public class HUD extends JFrame implements KeyListener  {
 	   // or enter is pressed.
 	   if ((key == KeyEvent.VK_SPACE || key == KeyEvent.VK_ENTER) && component == "BOTTOMRIGHT") {
 		   
-		   // Open the play list window
+		   // Hide the main HUD window
 		   frameHUD.setVisible(false);
+		   
+		   // Open the play list window
 		   framePlayList();
 
-	   }
+		   // set the focus the middle window
+		   playListA.requestFocusInWindow();
+   }
 	   
 	   if (key == KeyEvent.VK_LEFT) {
 
@@ -250,6 +254,39 @@ public class HUD extends JFrame implements KeyListener  {
 	   }  else if (key == KeyEvent.VK_UP) {
 		   
 		  System.out.println("up");
+
+		  if(component == "playlistA") {
+			  System.out.println("Do nothing [top playlist]");
+			
+		  }
+
+		  if(component == "playlistB") {
+
+			   playListA.setIcon(new ImageIcon(((new ImageIcon("playlist_on.png")).getImage()).getScaledInstance(498, 98, java.awt.Image.SCALE_SMOOTH)));
+			   playListB.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498, 98, java.awt.Image.SCALE_SMOOTH)));
+			   playListA.requestFocusInWindow();
+		  }		  
+		 
+		  if(component == "playlistC") {
+
+			   playListB.setIcon(new ImageIcon(((new ImageIcon("playlist_on.png")).getImage()).getScaledInstance(498, 98, java.awt.Image.SCALE_SMOOTH)));
+			   playListC.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498, 98, java.awt.Image.SCALE_SMOOTH)));
+			   playListB.requestFocusInWindow();
+		  }
+		  
+		  if(component == "playlistD") {
+
+			   playListC.setIcon(new ImageIcon(((new ImageIcon("playlist_on.png")).getImage()).getScaledInstance(498, 98, java.awt.Image.SCALE_SMOOTH)));
+			   playListD.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498, 98, java.awt.Image.SCALE_SMOOTH)));
+			   playListC.requestFocusInWindow();
+		  }
+		  
+		  if(component == "playlistE") {
+
+			   playListD.setIcon(new ImageIcon(((new ImageIcon("playlist_on.png")).getImage()).getScaledInstance(498, 98, java.awt.Image.SCALE_SMOOTH)));
+			   playListE.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498, 98, java.awt.Image.SCALE_SMOOTH)));
+			   playListD.requestFocusInWindow();
+		  }
 		  
 		  if(component == "BOTTOMLEFT") {
 			  			  
@@ -273,6 +310,40 @@ public class HUD extends JFrame implements KeyListener  {
 		   
 		  System.out.println("down");
 		  
+		  if(component == "playlistA") {
+			  
+			   playListB.setIcon(new ImageIcon(((new ImageIcon("playlist_on.png")).getImage()).getScaledInstance(498, 98, java.awt.Image.SCALE_SMOOTH)));
+			   playListA.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498, 98, java.awt.Image.SCALE_SMOOTH)));
+			   playListB.requestFocusInWindow();
+	
+		  }
+
+		  if(component == "playlistB") {
+
+			   playListC.setIcon(new ImageIcon(((new ImageIcon("playlist_on.png")).getImage()).getScaledInstance(498, 98, java.awt.Image.SCALE_SMOOTH)));
+			   playListB.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498, 98, java.awt.Image.SCALE_SMOOTH)));
+			   playListC.requestFocusInWindow();
+		  }		  
+		 
+		  if(component == "playlistC") {
+
+			   playListD.setIcon(new ImageIcon(((new ImageIcon("playlist_on.png")).getImage()).getScaledInstance(498, 98, java.awt.Image.SCALE_SMOOTH)));
+			   playListC.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498, 98, java.awt.Image.SCALE_SMOOTH)));
+			   playListD.requestFocusInWindow();
+		  }
+		  
+		  if(component == "playlistD") {
+
+			   playListE.setIcon(new ImageIcon(((new ImageIcon("playlist_on.png")).getImage()).getScaledInstance(498, 98, java.awt.Image.SCALE_SMOOTH)));
+			   playListD.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498, 98, java.awt.Image.SCALE_SMOOTH)));
+			   playListE.requestFocusInWindow();
+		  }
+		  
+		  if(component == "playlistE") {
+
+			  System.out.println("E Do nothing");
+		  }		  
+		 
 		  if(component == "TOPLEFT") {
 			  bottomleft.setIcon(new ImageIcon(((new ImageIcon("bottomleft_on.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
 			  topleft.setIcon(new ImageIcon(((new ImageIcon("topleft_off.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));

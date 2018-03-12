@@ -8,8 +8,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.*;
 
-
-
 /**
  * HUD DISPLAY
  * @author OUR TEAM NAME
@@ -21,18 +19,16 @@ public class HUD extends JFrame implements KeyListener  {
 	private int hudWidth, hudHeight;
 	private JButton topleft, topright, bottomleft, bottomright, playListA,playListB,playListC,playListD,playListE;
 	Dimension dim;
+	JFrame frameHUD,framePLayList;
 	
 	// width, height, x pos, y pos
 	int w, h, x, y;	
 	
-	
-
-    
 	public HUD() {
 		
 		// Init the HUD
 		hudHeight = hudWidth = 500;
-		
+
         // Get the size of the screen
         dim = Toolkit.getDefaultToolkit().getScreenSize();
         w = this.getSize().width;
@@ -40,27 +36,24 @@ public class HUD extends JFrame implements KeyListener  {
         x = (dim.width-w)/2-(hudWidth/2); // Correct for 1/2 of HUD width
         y = ((dim.height-h)/2)-80;
         
-        // Fire main hud on load
-		//frameHUD();
-		
-		framePlayList();
+        // Fire main HUD on load
+		frameHUD(); // visible = true
 		
 	}
 
-
 	public void framePlayList() {
 		
-		JFrame frame = new JFrame("HUD");
+		framePLayList = new JFrame("HUD");
 		
         // Disappear the background
-        frame.setUndecorated(true);
-        frame.getContentPane().setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
-        frame.setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
+		framePLayList.setUndecorated(true);
+		framePLayList.getContentPane().setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
+		framePLayList.setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
 		
         // set the rows and cols of the grid, as well the distances between them
         GridLayout grid = new GridLayout(5, 1, 5, 5);
         // what layout we want to use for our frame
-        frame.setLayout(grid);
+        framePLayList.setLayout(grid);
         
         // Playlist A
         playListA = new JButton();
@@ -71,7 +64,7 @@ public class HUD extends JFrame implements KeyListener  {
         playListA.setContentAreaFilled(false);    
         playListA.addKeyListener(this);
         playListA.setName("playListA");
-        frame.add(playListA);
+        framePLayList.add(playListA);
 
         // Playlist B
         playListB = new JButton();
@@ -82,7 +75,7 @@ public class HUD extends JFrame implements KeyListener  {
         playListB.setContentAreaFilled(false);    
         playListB.addKeyListener(this);
         playListB.setName("playlistB");
-        frame.add(playListB);
+        framePLayList.add(playListB);
 
         // Playlist C
         playListC = new JButton();
@@ -93,7 +86,7 @@ public class HUD extends JFrame implements KeyListener  {
         playListC.setContentAreaFilled(false);    
         playListC.addKeyListener(this);
         playListC.setName("playlistC");
-        frame.add(playListC);
+        framePLayList.add(playListC);
 
         // Playlist D
         playListD = new JButton();
@@ -104,7 +97,7 @@ public class HUD extends JFrame implements KeyListener  {
         playListD.setContentAreaFilled(false);    
         playListD.addKeyListener(this);
         playListD.setName("playlistD");
-        frame.add(playListD);
+        framePLayList.add(playListD);
 
         // Playlist E
         playListE = new JButton();
@@ -115,27 +108,27 @@ public class HUD extends JFrame implements KeyListener  {
         playListE.setContentAreaFilled(false);    
         playListE.addKeyListener(this);
         playListE.setName("playlistE");
-        frame.add(playListE);
+        framePLayList.add(playListE);
 
-		frame.setSize(hudWidth, hudHeight);
-		frame.setLocation(x,y); // location [just above taskbar and horiz centered]
-		frame.setVisible(true); // make frame visible
+        framePLayList.setSize(hudWidth, hudHeight);
+        framePLayList.setLocation(x,y); // location [just above taskbar and horiz centered]
+        framePLayList.setVisible(true); // make frame visible
 	
 	}
 
 	public void frameHUD() {
 		
-		JFrame frame = new JFrame("HUD");
+		frameHUD = new JFrame("HUD");
 		
         // Disappear the background
-        frame.setUndecorated(true);
-        frame.getContentPane().setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
-        frame.setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
+		frameHUD.setUndecorated(true);
+		frameHUD.getContentPane().setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
+		frameHUD.setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
        
         // set the rows and cols of the grid, as well the distances between them
         GridLayout grid = new GridLayout(2, 2, 10, 10);
         // what layout we want to use for our frame
-        frame.setLayout(grid);
+        frameHUD.setLayout(grid);
         
         // HUD BUTTONS
         topleft = new JButton();
@@ -146,7 +139,7 @@ public class HUD extends JFrame implements KeyListener  {
         topleft.setContentAreaFilled(false);    
         topleft.addKeyListener(this);
         topleft.setName("TOPLEFT");
-        frame.add(topleft);
+        frameHUD.add(topleft);
         
         topright = new JButton();
         topright.setIcon(new ImageIcon(((new ImageIcon("topright_off.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
@@ -156,7 +149,7 @@ public class HUD extends JFrame implements KeyListener  {
         topright.setContentAreaFilled(false);
         topright.addKeyListener(this);
         topright.setName("TOPRIGHT");
-        frame.add(topright);
+        frameHUD.add(topright);
 
         bottomleft = new JButton();
         bottomleft.setIcon(new ImageIcon(((new ImageIcon("bottomleft_off.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
@@ -166,7 +159,7 @@ public class HUD extends JFrame implements KeyListener  {
         bottomleft.setContentAreaFilled(false);
         bottomleft.addKeyListener(this);
         bottomleft.setName("BOTTOMLEFT");
-        frame.add(bottomleft);
+        frameHUD.add(bottomleft);
         
         bottomright = new JButton();
         bottomright.setIcon(new ImageIcon(((new ImageIcon("bottomright_off.png")).getImage()).getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
@@ -176,12 +169,12 @@ public class HUD extends JFrame implements KeyListener  {
         bottomright.setContentAreaFilled(false);
         bottomright.addKeyListener(this);
         bottomright.setName("BOTTOMRIGHT");
-        frame.add(bottomright);      
+        frameHUD.add(bottomright);      
  
-		frame.pack(); // take pack off later. Might be too bunched
-		frame.setSize(hudWidth, hudHeight);
-		frame.setLocation(x,y); // location [just above taskbar and horiz centered]
-		frame.setVisible(true); // make frame visible
+        frameHUD.pack(); // take pack off later. Might be too bunched
+        frameHUD.setSize(hudWidth, hudHeight);
+        frameHUD.setLocation(x,y); // location [just above taskbar and horiz centered]
+        frameHUD.setVisible(true); // make frame visible
 	}	
 	
 
@@ -194,13 +187,21 @@ public class HUD extends JFrame implements KeyListener  {
 		// Some shennanigans here. We need to shift the focus to the next component.
 		// i.e. it we move the bottom right, we need to shift focus to the button
 		// so the key listener will be associated with that button.
-
 	   System.out.println(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner().getName()); // Debug
-	
 	   String component = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner().getName();
 	   
 	   // Key pressed
 	   int key = evt.getKeyCode();
+
+	   // Fire the play list if the cursor is on the bottom right and space
+	   // or enter is pressed.
+	   if ((key == KeyEvent.VK_SPACE || key == KeyEvent.VK_ENTER) && component == "BOTTOMRIGHT") {
+		   
+		   // Open the play list window
+		   frameHUD.setVisible(false);
+		   framePlayList();
+
+	   }
 	   
 	   if (key == KeyEvent.VK_LEFT) {
 
@@ -222,9 +223,7 @@ public class HUD extends JFrame implements KeyListener  {
 			  System.out.println("FOCUS NOW IN BOTTOM LEFT WINDOW");
 			  
 		  }
-		  
 		 
-		  
 	      repaint();
 	      
 	   } else if (key == KeyEvent.VK_RIGHT) {

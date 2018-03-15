@@ -1,19 +1,23 @@
 import java.awt.Color;
+import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Insets;
-import java.awt.KeyboardFocusManager;
-import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.File;
-import java.io.IOException;
+import java.awt.KeyboardFocusManager;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.File;
+
+import java.util.Map;
+import java.util.HashMap;
+
 import javax.swing.*;
+
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.AudioInputStream;
+
 
 /**
  * HUD DISPLAY
@@ -22,9 +26,13 @@ import javax.swing.*;
  *
  */
 public class HUD extends JFrame implements KeyListener {
-	
-	final String MOVE_AUDIO_FILE_NAME = "/move.wav";
-	final String SELECT_AUDIO_FILE_NAME = "/select.wav";
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	final static String MOVE_AUDIO_FILE_NAME = "/sounds/messageSend.wav";
 
 	// LOCALS
 	private int hudWidth, hudHeight;
@@ -35,9 +43,11 @@ public class HUD extends JFrame implements KeyListener {
 	// width, height, x pos, y pos
 	int w, h, x, y;
 
-	/* Audio Feedback */
-	AudioInputStream moveAudio, selectAudio;
-	Clip moveClip, selectClip;
+	static /* Audio Feedback */
+	// AudioInputStream moveAudio, selectAudio;
+	AudioInputStream[] audioStreams = new AudioInputStream[15];
+	// static Clip[] soundClips = new Clip[15];
+	static Map<String, Clip> soundClips = new HashMap<String, Clip>();
 
 	public HUD() {
 
@@ -52,23 +62,31 @@ public class HUD extends JFrame implements KeyListener {
 													// width
 		y = ((dim.height - h) / 2) - 80;
 
-		/* Load button sounds. */
-		try {
-			/* Setup for move sound. */
-			moveAudio = AudioSystem.getAudioInputStream(new File(System.getProperty("user.dir") + MOVE_AUDIO_FILE_NAME));
-			moveClip = AudioSystem.getClip();
-			moveClip.open(moveAudio); 			// Buffer sound.
-			/* Setup for selection sound. */
-			selectAudio = AudioSystem.getAudioInputStream(new File(System.getProperty("user.dir") + SELECT_AUDIO_FILE_NAME));
-			selectClip = AudioSystem.getClip();
-			selectClip.open(selectAudio); 		// Buffer sound.
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		/* Load system sounds. */
+		loadSounds();
 
 		// Fire main HUD on load
 		frameHUD(); // visible = true
 
+	}
+
+	public static void loadSounds() {
+
+		File[] files = new File(System.getProperty("user.dir") + "/sounds").listFiles();
+
+		for (int i = 0; i < files.length; i++) {
+			try {
+				String theFileName = System.getProperty("user.dir") + "/sounds/" + files[i].getName();
+				if (theFileName.endsWith(".wav")) {
+					audioStreams[i] = AudioSystem.getAudioInputStream(new File(theFileName));
+					soundClips.put(files[i].getName(), AudioSystem.getClip());
+					soundClips.get(files[i].getName()).open(audioStreams[i]); // Buffer
+																				// sound.
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void framePlayList() {
@@ -252,25 +270,66 @@ public class HUD extends JFrame implements KeyListener {
 
 		// Fire the play list if the cursor is on the bottom right and space
 		// or enter is pressed.
-		if ((key == KeyEvent.VK_SPACE || key == KeyEvent.VK_ENTER) && component == "BOTTOMRIGHT") {
-			
-			/* Play select sound. */
-			playSelectSound();
+		if ((key == KeyEvent.VK_SPACE || key == KeyEvent.VK_ENTER)) {
+			switch (component) {
+			case "BOTTOMRIGHT":
+				/* Play select sound. */
+				playSound("musicSelected");
 
-			// Hide the main HUD window
-			frameHUD.setVisible(false);
+				// Hide the main HUD window
+				frameHUD.setVisible(false);
 
-			// Open the play list window
-			framePlayList();
+				// Open the play list window
+				framePlayList();
 
-			// set the focus the middle window
-			playListA.requestFocusInWindow();
+				// set the focus the middle window
+				playListA.requestFocusInWindow();
+				break;
+			case "TOPLEFT":
+				/* Play select sound. */
+				playSound("phoneSelected");
+				break;
+			case "TOPRIGHT":
+				/* Play select sound. */
+				playSound("GPSselected");
+				break;
+			case "BOTTOMLEFT":
+				/* Play select sound. */
+				playSound("contactsSelected");
+				break;
+			case "playlistA":
+				/* Play select sound. */
+				playSound("playlistSelected");
+				break;
+			case "playlistB":
+				/* Play select sound. */
+				playSound("playlistSelected");
+				break;
+			case "playlistC":
+				/* Play select sound. */
+				playSound("playlistSelected");
+				break;
+			case "playlistD":
+				/* Play select sound. */
+				playSound("playlistSelected");
+				break;
+			case "playlistE":
+				/* Play select sound. */
+				playSound("playlistSelected");
+				try {
+					Thread.sleep(2000);
+					playSound("whatIsLoveFadeOut");
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				break;
+			}
 		}
 
 		if (key == KeyEvent.VK_LEFT) {
 
 			/* Play move sound. */
-			playMoveSound();
+			playSound("messageSend");
 
 			System.out.println("left");
 
@@ -298,9 +357,9 @@ public class HUD extends JFrame implements KeyListener {
 			repaint();
 
 		} else if (key == KeyEvent.VK_RIGHT) {
-			
+
 			/* Play move sound. */
-			playMoveSound();
+			playSound("messageSend");
 
 			System.out.println("right");
 
@@ -328,17 +387,18 @@ public class HUD extends JFrame implements KeyListener {
 		} else if (key == KeyEvent.VK_UP) {
 
 			/* Play move sound. */
-			playMoveSound();
+			playSound("messageSend");
 
 			System.out.println("up");
 
 			if (component == "playlistA") {
+
 				System.out.println("Do nothing [top playlist]");
 
 			}
 
 			if (component == "playlistB") {
-
+				playSound("playlistA");
 				playListA.setIcon(new ImageIcon(((new ImageIcon("playlist_on.png")).getImage()).getScaledInstance(498,
 						98, java.awt.Image.SCALE_SMOOTH)));
 				playListB.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498,
@@ -347,7 +407,7 @@ public class HUD extends JFrame implements KeyListener {
 			}
 
 			if (component == "playlistC") {
-
+				playSound("playlistB");
 				playListB.setIcon(new ImageIcon(((new ImageIcon("playlist_on.png")).getImage()).getScaledInstance(498,
 						98, java.awt.Image.SCALE_SMOOTH)));
 				playListC.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498,
@@ -356,7 +416,7 @@ public class HUD extends JFrame implements KeyListener {
 			}
 
 			if (component == "playlistD") {
-
+				playSound("playlistC");
 				playListC.setIcon(new ImageIcon(((new ImageIcon("playlist_on.png")).getImage()).getScaledInstance(498,
 						98, java.awt.Image.SCALE_SMOOTH)));
 				playListD.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498,
@@ -365,7 +425,7 @@ public class HUD extends JFrame implements KeyListener {
 			}
 
 			if (component == "playlistE") {
-
+				playSound("playlistD");
 				playListD.setIcon(new ImageIcon(((new ImageIcon("playlist_on.png")).getImage()).getScaledInstance(498,
 						98, java.awt.Image.SCALE_SMOOTH)));
 				playListE.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498,
@@ -398,12 +458,12 @@ public class HUD extends JFrame implements KeyListener {
 		} else if (key == KeyEvent.VK_DOWN) {
 
 			/* Play move sound. */
-			playMoveSound();
+			playSound("messageSend");
 
 			System.out.println("down");
 
 			if (component == "playlistA") {
-
+				playSound("playlistB");
 				playListB.setIcon(new ImageIcon(((new ImageIcon("playlist_on.png")).getImage()).getScaledInstance(498,
 						98, java.awt.Image.SCALE_SMOOTH)));
 				playListA.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498,
@@ -414,7 +474,7 @@ public class HUD extends JFrame implements KeyListener {
 			}
 
 			if (component == "playlistB") {
-
+				playSound("playlistC");
 				playListC.setIcon(new ImageIcon(((new ImageIcon("playlist_on.png")).getImage()).getScaledInstance(498,
 						98, java.awt.Image.SCALE_SMOOTH)));
 				playListB.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498,
@@ -423,7 +483,7 @@ public class HUD extends JFrame implements KeyListener {
 			}
 
 			if (component == "playlistC") {
-
+				playSound("playlistD");
 				playListD.setIcon(new ImageIcon(((new ImageIcon("playlist_on.png")).getImage()).getScaledInstance(498,
 						98, java.awt.Image.SCALE_SMOOTH)));
 				playListC.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498,
@@ -432,7 +492,7 @@ public class HUD extends JFrame implements KeyListener {
 			}
 
 			if (component == "playlistD") {
-
+				playSound("playlistE");
 				playListE.setIcon(new ImageIcon(((new ImageIcon("playlist_on.png")).getImage()).getScaledInstance(498,
 						98, java.awt.Image.SCALE_SMOOTH)));
 				playListD.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498,
@@ -479,14 +539,9 @@ public class HUD extends JFrame implements KeyListener {
 
 	}
 
-	public void playMoveSound() {
-		moveClip.stop();
-		moveClip.setMicrosecondPosition(0);
-		moveClip.start();
-	}
-	public void playSelectSound() {
-		selectClip.stop();
-		selectClip.setMicrosecondPosition(0);
-		selectClip.start();
+	public void playSound(String theSoundName) {
+		// moveClip.stop();
+		soundClips.get(theSoundName + ".wav").setMicrosecondPosition(0);
+		soundClips.get(theSoundName + ".wav").start();
 	}
 }

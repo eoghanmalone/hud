@@ -3,6 +3,8 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.KeyboardFocusManager;
@@ -25,7 +27,7 @@ import javax.sound.sampled.AudioInputStream;
  * @author OUR TEAM NAME
  *
  */
-public class HUD extends JFrame implements KeyListener {
+public class HUD extends JFrame implements KeyListener, ActionListener {
 
 	/**
 	 * 
@@ -36,16 +38,20 @@ public class HUD extends JFrame implements KeyListener {
 
 	// LOCALS
 	private int hudWidth, hudHeight;
-	private JButton topleft, topright, bottomleft, bottomright, playListA, playListB, playListC, playListD, playListE;
-	Dimension dim;
-	JFrame frameHUD, framePLayList;
+	private JButton topleft, topright, bottomleft, bottomright, playListA, playListB, playListC, playListD, playListE,bParticipant;
+	private JTextArea participantName;
+	private JLabel participantLabel;
+	private Dimension dim;
+	private JFrame frameHUD, framePLayList, frameParticipant;
 
 	// width, height, x pos, y pos
-	int w, h, x, y;
+	private int w, h, x, y;
 
 	// DATA
-	int totalKeyPresses, wrongSelections; // Track keypresses
+	private int totalKeyPresses, wrongSelections; // Track keypresses
 	private long startTime, endTime, totalTime;	// Track start, end and total time	 
+	private String nameOfParticipant; // who is taking part
+	private boolean tracking;
 	
 	static /* Audio Feedback */
 	// AudioInputStream moveAudio, selectAudio;
@@ -67,12 +73,14 @@ public class HUD extends JFrame implements KeyListener {
 		
 		// Set data to zero
 		totalKeyPresses = wrongSelections = 0;
+		tracking = false;
 		
 		// Load system sounds
 		loadSounds();
 
-		// Fire main HUD on load
-		frameHUD(); // visible = true
+		// first frame captures details
+		frameParticipant();
+		
 
 	}
 	
@@ -98,6 +106,49 @@ public class HUD extends JFrame implements KeyListener {
 		}
 	}
 
+	
+	/**
+	 * Playlist participant
+	 */
+	public void frameParticipant() {
+
+		frameParticipant = new JFrame("Participant capture");
+
+		// set the rows and cols of the grid, as well the distances between them
+		GridLayout grid = new GridLayout(3, 1);
+		
+		// Layout
+		frameParticipant.setLayout(grid);
+		
+		
+		// Label
+		participantLabel = new JLabel("Please enter your name click SAVE");
+		participantLabel.setFont(participantLabel.getFont().deriveFont(20f));
+		participantLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		frameParticipant.add(participantLabel);
+		
+		// Text area for participant name
+		participantName = new JTextArea();
+		participantName.setName("participant");
+		participantName.setFont(participantName.getFont().deriveFont(20f));
+		participantName.getDocument().putProperty("filterNewlines", Boolean.TRUE);
+		participantName.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		frameParticipant.add(participantName);
+		
+		// save button
+		bParticipant = new JButton("SAVE");
+		bParticipant.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		bParticipant.setName("bParticipant");
+		bParticipant.addActionListener(this);
+		frameParticipant.add(bParticipant);
+		
+		// position and display
+		frameParticipant.setSize(500, 200);
+		frameParticipant.setLocation(x, y); // location [just above taskbar and horizontal centered]
+		frameParticipant.setVisible(true); // make frame visible
+	
+	}
+	
 	/**
 	 * Playlist frame
 	 */
@@ -268,7 +319,7 @@ public class HUD extends JFrame implements KeyListener {
 	public void keyPressed(KeyEvent evt) {
 
 		// increment the key press counter
-		totalKeyPresses++;
+		if(tracking) { totalKeyPresses++;}
 		
 		// component
 		String component = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner().getName();
@@ -280,6 +331,7 @@ public class HUD extends JFrame implements KeyListener {
 		if(key == KeyEvent.VK_ESCAPE) {
 			System.out.println("start clock");
 			startTime = System.currentTimeMillis();
+			tracking = true; 
 		}
 		
 		// Fire the play list if the cursor is on the bottom right and space
@@ -302,51 +354,56 @@ public class HUD extends JFrame implements KeyListener {
 			case "TOPLEFT":
 				/* Play select sound. */
 				playSound("phoneSelected");
-				wrongSelections++;
+				
+				if(tracking) { wrongSelections++;}
+				
 				break;
 			case "TOPRIGHT":
 				/* Play select sound. */
 				playSound("GPSselected");
-				wrongSelections++;
+				if(tracking) { wrongSelections++;}
 				break;
 			case "BOTTOMLEFT":
 				/* Play select sound. */
 				playSound("contactsSelected");
-				wrongSelections++;
+				if(tracking) { wrongSelections++;}
 				break;
 			case "playlistA":
 				/* Play select sound. */
 				playSound("playlistSelected");
-				wrongSelections++;
+				if(tracking) { wrongSelections++;}
 				break;
 			case "playlistB":
 				/* Play select sound. */
 				playSound("playlistSelected");
-				wrongSelections++;
+				if(tracking) { wrongSelections++;}
 				break;
 			case "playlistC":
 				/* Play select sound. */
 				playSound("playlistSelected");
-				wrongSelections++;
+				if(tracking) { wrongSelections++;}
 				break;
 			case "playlistD":
 				/* Play select sound. */
 				playSound("playlistSelected");
-				wrongSelections++;
+				if(tracking) { wrongSelections++;}
 				break;
 			case "playlistE":
 				
-				// Log the end time
-				endTime = System.currentTimeMillis();
+				if(tracking) { 
+	
+					// Log the end time
+					endTime = System.currentTimeMillis();
+					// Update the total time to complete
+					totalTime = endTime - startTime;
 		
-				// Update the total time to complete
-				totalTime = endTime - startTime;
-				
-				System.out.println(totalTime);
+					System.out.println("Total time taken: " + (double)totalTime/1000 +  " seconds");
+				}
+	
 				/* Play select sound. */
 				playSound("playlistSelected");
 				try {
-					Thread.sleep(2000);
+					Thread.sleep(1600);
 					playSound("whatIsLoveFadeOut");
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -478,8 +535,6 @@ public class HUD extends JFrame implements KeyListener {
 			/* Play move sound. */
 			playSound("messageSend");
 
-			System.out.println("down");
-
 			if (component == "playlistA") {
 				//playSound("playlistB");
 				playListB.setIcon(new ImageIcon(((new ImageIcon("playlist_on.png")).getImage()).getScaledInstance(498,
@@ -520,7 +575,7 @@ public class HUD extends JFrame implements KeyListener {
 
 			if (component == "playlistE") {
 
-				//System.out.println("E Do nothing");
+
 			}
 
 			if (component == "TOPLEFT") {
@@ -529,7 +584,7 @@ public class HUD extends JFrame implements KeyListener {
 				topleft.setIcon(new ImageIcon(((new ImageIcon("topleft_off.png")).getImage()).getScaledInstance(245,
 						245, java.awt.Image.SCALE_SMOOTH)));
 				bottomleft.requestFocusInWindow();
-				System.out.println("FOCUS NOW IN BOTTOM LEFT WINDOW");
+
 			}
 			if (component == "TOPRIGHT") {
 				topright.setIcon(new ImageIcon(((new ImageIcon("topright_off.png")).getImage()).getScaledInstance(245,
@@ -537,15 +592,18 @@ public class HUD extends JFrame implements KeyListener {
 				bottomright.setIcon(new ImageIcon(((new ImageIcon("bottomright_on.png")).getImage())
 						.getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
 				bottomright.requestFocusInWindow();
-				//System.out.println("FOCUS NOW IN BOTTOM RIGHT WINDOW");
+
 			}
 
 			repaint();
 		}
 
+		
 		// Debug
-		System.out.println("Total key presses:" + totalKeyPresses);
-		System.out.println("Total wrong key presses: " + wrongSelections);
+		if(tracking) { 
+			System.out.println("Total key presses:" + totalKeyPresses);
+			System.out.println("Total wrong key presses: " + wrongSelections);
+		}
 	}
 
 	@Override
@@ -560,9 +618,29 @@ public class HUD extends JFrame implements KeyListener {
 
 	}
 
+	/**
+	 * Play sound clip
+	 * @param theSoundName
+	 */
 	public void playSound(String theSoundName) {
 		// moveClip.stop();
 		soundClips.get(theSoundName + ".wav").setMicrosecondPosition(0);
 		soundClips.get(theSoundName + ".wav").start();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+			if(participantName.getText().length() < 5) {
+			   System.out.println("Nope");
+			} else {
+				
+				frameParticipant.setVisible(false);
+				nameOfParticipant = participantName.getText().trim();
+				System.out.println("Participant" + participantName.getText());
+				playSound("messageSend");
+				frameHUD();
+			}
+
 	}
 }

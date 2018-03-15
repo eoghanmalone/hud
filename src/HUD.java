@@ -305,6 +305,10 @@ public class HUD extends JFrame implements KeyListener, ActionListener {
 		bottomright.addKeyListener(this);
 		bottomright.setName("BOTTOMRIGHT");
 		frameHUD.add(bottomright);
+		
+		
+		topleft.setIcon(new ImageIcon(((new ImageIcon("topleft_on.png")).getImage()).getScaledInstance(245,
+				245, java.awt.Image.SCALE_SMOOTH)));
 
 		frameHUD.pack(); // take pack off later. Might be too bunched
 		frameHUD.setSize(hudWidth, hudHeight);
@@ -329,7 +333,6 @@ public class HUD extends JFrame implements KeyListener, ActionListener {
 
 		// Escape will start the task
 		if(key == KeyEvent.VK_ESCAPE) {
-			System.out.println("start clock");
 			startTime = System.currentTimeMillis();
 			tracking = true; 
 		}
@@ -406,6 +409,8 @@ public class HUD extends JFrame implements KeyListener, ActionListener {
 					System.out.println("Total wrong key presses: " + wrongSelections);
 					System.out.println("Total time taken: " + (double)totalTime/1000 +  " seconds");
 					
+					framePLayList.setVisible(false);
+					
 				}
 	
 				/* Play select sound. */
@@ -421,6 +426,13 @@ public class HUD extends JFrame implements KeyListener, ActionListener {
 		}
 
 		if (key == KeyEvent.VK_LEFT) {
+			
+			if (component == "playlistA" || component == "playlistB" || component == "playlistC"  || component == "playlistD"  || component == "playlistE") {
+				
+				framePLayList.setVisible(false);
+				framePLayList = null;
+				frameHUD.setVisible(true);	
+			}
 
 			/* Play move sound. */
 			playSound("messageSend");
@@ -447,6 +459,13 @@ public class HUD extends JFrame implements KeyListener, ActionListener {
 			repaint();
 
 		} else if (key == KeyEvent.VK_RIGHT) {
+			
+			if (component == "playlistA" || component == "playlistB" || component == "playlistC"  || component == "playlistD"  || component == "playlistE") {
+				
+				framePLayList.setVisible(false);
+				framePLayList = null;
+				frameHUD.setVisible(true);	
+			}
 
 			/* Play move sound. */
 			playSound("messageSend");
@@ -640,12 +659,13 @@ public class HUD extends JFrame implements KeyListener, ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		
 			if(participantName.getText().length() < 5) {
-			   System.out.println("Nope");
+				
+				// Do nothing
+			   
 			} else {
 				
 				frameParticipant.setVisible(false);
 				nameOfParticipant = participantName.getText().trim();
-				System.out.println("Participant" + participantName.getText());
 				playSound("messageSend");
 				frameHUD();
 			}

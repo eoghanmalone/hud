@@ -43,6 +43,10 @@ public class HUD extends JFrame implements KeyListener {
 	// width, height, x pos, y pos
 	int w, h, x, y;
 
+	// DATA
+	int totalKeyPresses, wrongSelections; // Track keypresses
+	private long startTime, endTime, totalTime;	// Track start, end and total time	 
+	
 	static /* Audio Feedback */
 	// AudioInputStream moveAudio, selectAudio;
 	AudioInputStream[] audioStreams = new AudioInputStream[15];
@@ -59,17 +63,22 @@ public class HUD extends JFrame implements KeyListener {
 		w = this.getSize().width;
 		h = this.getSize().height;
 		x = (dim.width - w) / 2 - (hudWidth / 2); // Correct for 1/2 of HUD
-													// width
-		y = ((dim.height - h) / 2) - 80;
-
-		/* Load system sounds. */
+		y = ((dim.height - h) / 2) - 80;	// width
+		
+		// Set data to zero
+		totalKeyPresses = wrongSelections = 0;
+		
+		// Load system sounds
 		loadSounds();
 
 		// Fire main HUD on load
 		frameHUD(); // visible = true
 
 	}
-
+	
+	/**
+	 * Load sounds
+	 */
 	public static void loadSounds() {
 
 		File[] files = new File(System.getProperty("user.dir") + "/sounds").listFiles();
@@ -89,6 +98,9 @@ public class HUD extends JFrame implements KeyListener {
 		}
 	}
 
+	/**
+	 * Playlist frame
+	 */
 	public void framePlayList() {
 
 		framePLayList = new JFrame("HUD");
@@ -179,8 +191,7 @@ public class HUD extends JFrame implements KeyListener {
 		framePLayList.add(playListE);
 
 		framePLayList.setSize(hudWidth, hudHeight);
-		framePLayList.setLocation(x, y); // location [just above taskbar and
-											// horiz centered]
+		framePLayList.setLocation(x, y); // location [just above taskbar and horiz centered]
 		framePLayList.setVisible(true); // make frame visible
 
 	}
@@ -256,18 +267,21 @@ public class HUD extends JFrame implements KeyListener {
 	 */
 	public void keyPressed(KeyEvent evt) {
 
-		// We need to know the name of the button that is in play.
-		// Some shennanigans here. We need to shift the focus to the next
-		// component.
-		// i.e. it we move the bottom right, we need to shift focus to the
-		// button
-		// so the key listener will be associated with that button.
-		System.out.println(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner().getName()); // Debug
+		// increment the key press counter
+		totalKeyPresses++;
+		
+		// component
 		String component = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner().getName();
 
 		// Key pressed
 		int key = evt.getKeyCode();
 
+		// Escape will start the task
+		if(key == KeyEvent.VK_ESCAPE) {
+			System.out.println("start clock");
+			startTime = System.currentTimeMillis();
+		}
+		
 		// Fire the play list if the cursor is on the bottom right and space
 		// or enter is pressed.
 		if ((key == KeyEvent.VK_SPACE || key == KeyEvent.VK_ENTER)) {
@@ -288,32 +302,47 @@ public class HUD extends JFrame implements KeyListener {
 			case "TOPLEFT":
 				/* Play select sound. */
 				playSound("phoneSelected");
+				wrongSelections++;
 				break;
 			case "TOPRIGHT":
 				/* Play select sound. */
 				playSound("GPSselected");
+				wrongSelections++;
 				break;
 			case "BOTTOMLEFT":
 				/* Play select sound. */
 				playSound("contactsSelected");
+				wrongSelections++;
 				break;
 			case "playlistA":
 				/* Play select sound. */
 				playSound("playlistSelected");
+				wrongSelections++;
 				break;
 			case "playlistB":
 				/* Play select sound. */
 				playSound("playlistSelected");
+				wrongSelections++;
 				break;
 			case "playlistC":
 				/* Play select sound. */
 				playSound("playlistSelected");
+				wrongSelections++;
 				break;
 			case "playlistD":
 				/* Play select sound. */
 				playSound("playlistSelected");
+				wrongSelections++;
 				break;
 			case "playlistE":
+				
+				// Log the end time
+				endTime = System.currentTimeMillis();
+		
+				// Update the total time to complete
+				totalTime = endTime - startTime;
+				
+				System.out.println(totalTime);
 				/* Play select sound. */
 				playSound("playlistSelected");
 				try {
@@ -331,8 +360,6 @@ public class HUD extends JFrame implements KeyListener {
 			/* Play move sound. */
 			playSound("messageSend");
 
-			System.out.println("left");
-
 			if (component == "TOPRIGHT") {
 
 				topleft.requestFocusInWindow();
@@ -340,7 +367,6 @@ public class HUD extends JFrame implements KeyListener {
 						245, java.awt.Image.SCALE_SMOOTH)));
 				topleft.setIcon(new ImageIcon(((new ImageIcon("topleft_on.png")).getImage()).getScaledInstance(245, 245,
 						java.awt.Image.SCALE_SMOOTH)));
-				System.out.println("FOCUS NOW IN TOP LEFT WINDOW");
 			}
 
 			if (component == "BOTTOMRIGHT") {
@@ -350,7 +376,6 @@ public class HUD extends JFrame implements KeyListener {
 				bottomright.setIcon(new ImageIcon(((new ImageIcon("bottomright_off.png")).getImage())
 						.getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
 				bottomleft.requestFocusInWindow();
-				System.out.println("FOCUS NOW IN BOTTOM LEFT WINDOW");
 
 			}
 
@@ -361,15 +386,13 @@ public class HUD extends JFrame implements KeyListener {
 			/* Play move sound. */
 			playSound("messageSend");
 
-			System.out.println("right");
-
 			if (component == "TOPLEFT") {
 				topright.setIcon(new ImageIcon(((new ImageIcon("topright_on.png")).getImage()).getScaledInstance(245,
 						245, java.awt.Image.SCALE_SMOOTH)));
 				topleft.setIcon(new ImageIcon(((new ImageIcon("topleft_off.png")).getImage()).getScaledInstance(245,
 						245, java.awt.Image.SCALE_SMOOTH)));
 				topright.requestFocusInWindow();
-				System.out.println("FOCUS NOW IN TOP RIGHT WINDOW");
+				
 			}
 
 			if (component == "BOTTOMLEFT") {
@@ -379,7 +402,6 @@ public class HUD extends JFrame implements KeyListener {
 				bottomright.setIcon(new ImageIcon(((new ImageIcon("bottomright_on.png")).getImage())
 						.getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
 				bottomright.requestFocusInWindow();
-				System.out.println("FOCUS NOW IN BOTTOM RIGHT WINDOW");
 			}
 
 			repaint();
@@ -389,11 +411,7 @@ public class HUD extends JFrame implements KeyListener {
 			/* Play move sound. */
 			playSound("messageSend");
 
-			System.out.println("up");
-
 			if (component == "playlistA") {
-
-				System.out.println("Do nothing [top playlist]");
 
 			}
 
@@ -440,7 +458,7 @@ public class HUD extends JFrame implements KeyListener {
 				bottomleft.setIcon(new ImageIcon(((new ImageIcon("bottomleft_off.png")).getImage())
 						.getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
 				topleft.requestFocusInWindow();
-				System.out.println("FOCUS NOW IN TOP LEFT WINDOW");
+				//System.out.println("FOCUS NOW IN TOP LEFT WINDOW");
 			}
 
 			if (component == "BOTTOMRIGHT") {
@@ -450,7 +468,7 @@ public class HUD extends JFrame implements KeyListener {
 				bottomright.setIcon(new ImageIcon(((new ImageIcon("bottomright_off.png")).getImage())
 						.getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
 				topright.requestFocusInWindow();
-				System.out.println("FOCUS NOW IN TOP RIGHT WINDOW");
+				//System.out.println("FOCUS NOW IN TOP RIGHT WINDOW");
 			}
 
 			repaint();
@@ -463,7 +481,7 @@ public class HUD extends JFrame implements KeyListener {
 			System.out.println("down");
 
 			if (component == "playlistA") {
-				playSound("playlistB");
+				//playSound("playlistB");
 				playListB.setIcon(new ImageIcon(((new ImageIcon("playlist_on.png")).getImage()).getScaledInstance(498,
 						98, java.awt.Image.SCALE_SMOOTH)));
 				playListA.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498,
@@ -474,7 +492,7 @@ public class HUD extends JFrame implements KeyListener {
 			}
 
 			if (component == "playlistB") {
-				playSound("playlistC");
+				//playSound("playlistC");
 				playListC.setIcon(new ImageIcon(((new ImageIcon("playlist_on.png")).getImage()).getScaledInstance(498,
 						98, java.awt.Image.SCALE_SMOOTH)));
 				playListB.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498,
@@ -483,7 +501,7 @@ public class HUD extends JFrame implements KeyListener {
 			}
 
 			if (component == "playlistC") {
-				playSound("playlistD");
+				//playSound("playlistD");
 				playListD.setIcon(new ImageIcon(((new ImageIcon("playlist_on.png")).getImage()).getScaledInstance(498,
 						98, java.awt.Image.SCALE_SMOOTH)));
 				playListC.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498,
@@ -492,7 +510,7 @@ public class HUD extends JFrame implements KeyListener {
 			}
 
 			if (component == "playlistD") {
-				playSound("playlistE");
+				//playSound("playlistE");
 				playListE.setIcon(new ImageIcon(((new ImageIcon("playlist_on.png")).getImage()).getScaledInstance(498,
 						98, java.awt.Image.SCALE_SMOOTH)));
 				playListD.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498,
@@ -502,7 +520,7 @@ public class HUD extends JFrame implements KeyListener {
 
 			if (component == "playlistE") {
 
-				System.out.println("E Do nothing");
+				//System.out.println("E Do nothing");
 			}
 
 			if (component == "TOPLEFT") {
@@ -519,12 +537,15 @@ public class HUD extends JFrame implements KeyListener {
 				bottomright.setIcon(new ImageIcon(((new ImageIcon("bottomright_on.png")).getImage())
 						.getScaledInstance(245, 245, java.awt.Image.SCALE_SMOOTH)));
 				bottomright.requestFocusInWindow();
-				System.out.println("FOCUS NOW IN BOTTOM RIGHT WINDOW");
+				//System.out.println("FOCUS NOW IN BOTTOM RIGHT WINDOW");
 			}
 
 			repaint();
 		}
 
+		// Debug
+		System.out.println("Total key presses:" + totalKeyPresses);
+		System.out.println("Total wrong key presses: " + wrongSelections);
 	}
 
 	@Override

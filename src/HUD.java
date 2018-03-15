@@ -391,13 +391,21 @@ public class HUD extends JFrame implements KeyListener, ActionListener {
 			case "playlistE":
 				
 				if(tracking) { 
-	
+					
+					tracking = false; // kill tracking
+					
 					// Log the end time
 					endTime = System.currentTimeMillis();
 					// Update the total time to complete
 					totalTime = endTime - startTime;
-		
+					
+					System.out.println("=======================================");
+					System.out.println("Participant: " + nameOfParticipant);
+					System.out.println("=======================================");
+					System.out.println("Total key presses: " + totalKeyPresses);
+					System.out.println("Total wrong key presses: " + wrongSelections);
 					System.out.println("Total time taken: " + (double)totalTime/1000 +  " seconds");
+					
 				}
 	
 				/* Play select sound. */
@@ -601,8 +609,8 @@ public class HUD extends JFrame implements KeyListener, ActionListener {
 		
 		// Debug
 		if(tracking) { 
-			System.out.println("Total key presses:" + totalKeyPresses);
-			System.out.println("Total wrong key presses: " + wrongSelections);
+			//System.out.println("Total key presses: " + totalKeyPresses);
+			//System.out.println("Total wrong key presses: " + wrongSelections);
 		}
 	}
 

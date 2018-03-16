@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -131,7 +132,7 @@ public class HUD extends JFrame implements KeyListener, ActionListener {
 		
 		
 		// Label
-		participantLabel = new JLabel("Please enter your name click SAVE");
+		participantLabel = new JLabel("Please enter ID click SAVE");
 		participantLabel.setFont(participantLabel.getFont().deriveFont(20f));
 		participantLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		frameParticipant.add(participantLabel);
@@ -187,6 +188,10 @@ public class HUD extends JFrame implements KeyListener, ActionListener {
 		playListA.addKeyListener(this);
 		playListA.setHorizontalTextPosition(JButton.CENTER);
 		playListA.setVerticalTextPosition(JButton.CENTER);
+		
+		playListA.setForeground(Color.WHITE);
+		playListA.setFont(new Font("Arial", Font.BOLD, 40));
+		
 		playListA.setName("playlistA");
 		framePLayList.add(playListA);
 
@@ -202,6 +207,10 @@ public class HUD extends JFrame implements KeyListener, ActionListener {
 		playListB.addKeyListener(this);
 		playListB.setHorizontalTextPosition(JButton.CENTER);
 		playListB.setVerticalTextPosition(JButton.CENTER);
+		
+		playListB.setForeground(Color.WHITE);
+		playListB.setFont(new Font("Arial", Font.BOLD, 40));
+		
 		playListB.setName("playlistB");
 		framePLayList.add(playListB);
 
@@ -217,6 +226,10 @@ public class HUD extends JFrame implements KeyListener, ActionListener {
 		playListC.setFocusPainted(false);
 		playListC.setContentAreaFilled(false);
 		playListC.addKeyListener(this);
+		
+		playListC.setForeground(Color.WHITE);
+		playListC.setFont(new Font("Arial", Font.BOLD, 40)); 
+		
 		playListC.setName("playlistC");
 		framePLayList.add(playListC);
 
@@ -232,6 +245,10 @@ public class HUD extends JFrame implements KeyListener, ActionListener {
 		playListD.setFocusPainted(false);
 		playListD.setContentAreaFilled(false);
 		playListD.addKeyListener(this);
+		
+		playListD.setForeground(Color.WHITE);
+		playListD.setFont(new Font("Arial", Font.BOLD, 40)); 		
+		
 		playListD.setName("playlistD");
 		framePLayList.add(playListD);
 
@@ -247,11 +264,15 @@ public class HUD extends JFrame implements KeyListener, ActionListener {
 		playListE.setFocusPainted(false);
 		playListE.setContentAreaFilled(false);
 		playListE.addKeyListener(this);
+		
+		playListE.setForeground(Color.WHITE);
+		playListE.setFont(new Font("Arial", Font.BOLD, 40)); 		
+		
 		playListE.setName("playlistE");
 		framePLayList.add(playListE);
 
 		framePLayList.setSize(hudWidth, hudHeight);
-		framePLayList.setLocation(x, y); // location [just above taskbar and horiz centered]
+		framePLayList.setLocation(x-500, y); // location [just above taskbar and horiz centered]
 		framePLayList.setVisible(true); // make frame visible
 
 	}
@@ -321,7 +342,7 @@ public class HUD extends JFrame implements KeyListener, ActionListener {
 
 		frameHUD.pack(); // take pack off later. Might be too bunched
 		frameHUD.setSize(hudWidth, hudHeight);
-		frameHUD.setLocation(x, y); // location [just above taskbar and horiz
+		frameHUD.setLocation(x-500, y); // location [just above taskbar and horiz
 									// centered]
 		frameHUD.setVisible(true); // make frame visible
 	}
@@ -415,7 +436,7 @@ public class HUD extends JFrame implements KeyListener, ActionListener {
 					String filePath = "data.txt";
 
 					try (Writer fileWriter = new FileWriter(filePath, true)){
-						data =  nameOfParticipant + "," + totalKeyPresses + "," +  wrongSelections + "," + totalTime + "\n";
+						data =  nameOfParticipant + "," + totalKeyPresses + "," +  wrongSelections + "," + (double)totalTime/1000 + "\n";
 						System.out.println(data);
 						fileWriter.write(data);
 					} catch (IOException e) {
@@ -685,7 +706,7 @@ public class HUD extends JFrame implements KeyListener, ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-			if(participantName.getText().length() < 5) {
+			if(participantName.getText().length() < 1) {
 				
 				// Do nothing
 			   

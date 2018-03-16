@@ -8,9 +8,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.KeyboardFocusManager;
-
+import java.io.BufferedWriter;
 import java.io.File;
-
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -19,6 +22,11 @@ import javax.swing.*;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.AudioInputStream;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
 
 
 /**
@@ -52,6 +60,8 @@ public class HUD extends JFrame implements KeyListener, ActionListener {
 	private long startTime, endTime, totalTime;	// Track start, end and total time	 
 	private String nameOfParticipant; // who is taking part
 	private boolean tracking;
+	private String data;
+
 	
 	static /* Audio Feedback */
 	// AudioInputStream moveAudio, selectAudio;
@@ -77,10 +87,9 @@ public class HUD extends JFrame implements KeyListener, ActionListener {
 		
 		// Load system sounds
 		loadSounds();
-
+		
 		// first frame captures details
 		frameParticipant();
-		
 
 	}
 	
@@ -393,7 +402,27 @@ public class HUD extends JFrame implements KeyListener, ActionListener {
 				break;
 			case "playlistE":
 				
+				framePLayList.setVisible(false);
+				
+				// Log the end time
+				endTime = System.currentTimeMillis();
+				// Update the total time to complete
+				totalTime = endTime - startTime;
+				
+				System.out.println(data);
 				if(tracking) { 
+
+					String filePath = "data.txt";
+
+					try (Writer fileWriter = new FileWriter(filePath, true)){
+						data =  nameOfParticipant + "," + totalKeyPresses + "," +  wrongSelections + "," + totalTime + "\n";
+						System.out.println(data);
+						fileWriter.write(data);
+					} catch (IOException e) {
+						System.out.println("Problem occurs when deleting the directory : " + filePath);
+						e.printStackTrace();
+					}
+					
 					
 					tracking = false; // kill tracking
 					
@@ -408,9 +437,7 @@ public class HUD extends JFrame implements KeyListener, ActionListener {
 					System.out.println("Total key presses: " + totalKeyPresses);
 					System.out.println("Total wrong key presses: " + wrongSelections);
 					System.out.println("Total time taken: " + (double)totalTime/1000 +  " seconds");
-					
-					framePLayList.setVisible(false);
-					
+
 				}
 	
 				/* Play select sound. */
@@ -563,7 +590,7 @@ public class HUD extends JFrame implements KeyListener, ActionListener {
 			playSound("messageSend");
 
 			if (component == "playlistA") {
-				//playSound("playlistB");
+				playSound("playlistB");
 				playListB.setIcon(new ImageIcon(((new ImageIcon("playlist_on.png")).getImage()).getScaledInstance(498,
 						98, java.awt.Image.SCALE_SMOOTH)));
 				playListA.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498,
@@ -574,7 +601,7 @@ public class HUD extends JFrame implements KeyListener, ActionListener {
 			}
 
 			if (component == "playlistB") {
-				//playSound("playlistC");
+				playSound("playlistC");
 				playListC.setIcon(new ImageIcon(((new ImageIcon("playlist_on.png")).getImage()).getScaledInstance(498,
 						98, java.awt.Image.SCALE_SMOOTH)));
 				playListB.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498,
@@ -583,7 +610,7 @@ public class HUD extends JFrame implements KeyListener, ActionListener {
 			}
 
 			if (component == "playlistC") {
-				//playSound("playlistD");
+				playSound("playlistD");
 				playListD.setIcon(new ImageIcon(((new ImageIcon("playlist_on.png")).getImage()).getScaledInstance(498,
 						98, java.awt.Image.SCALE_SMOOTH)));
 				playListC.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498,
@@ -592,7 +619,7 @@ public class HUD extends JFrame implements KeyListener, ActionListener {
 			}
 
 			if (component == "playlistD") {
-				//playSound("playlistE");
+				playSound("playlistE");
 				playListE.setIcon(new ImageIcon(((new ImageIcon("playlist_on.png")).getImage()).getScaledInstance(498,
 						98, java.awt.Image.SCALE_SMOOTH)));
 				playListD.setIcon(new ImageIcon(((new ImageIcon("playlist_off.png")).getImage()).getScaledInstance(498,
